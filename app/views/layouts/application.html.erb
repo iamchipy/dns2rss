@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>dns2rss</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="layout">
+    <div class="layout__container">
+      <header class="layout__header">
+        <div class="layout__brand">
+          <%= link_to "dns2rss", root_path, class: "layout__brand-link" %>
+        </div>
+        <p class="layout__tagline">Single-page interface for DNS change monitoring</p>
+      </header>
+
+      <main class="layout__main">
+        <%= yield %>
+      </main>
+
+      <footer class="layout__footer">
+        <small>&copy; <%= Time.current.year %> dns2rss</small>
+      </footer>
+    </div>
+  </body>
+</html>
