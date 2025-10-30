@@ -3,11 +3,13 @@
 # Use this file to easily define all of your cron jobs using the Whenever DSL.
 # Learn more: https://github.com/javan/whenever
 
+require "active_support/core_ext/numeric/time"
+
 set :output, "log/cron.log"
 set :environment, ENV.fetch("RAILS_ENV", "development")
 
-# Placeholder job to demonstrate scheduling. Replace or remove once real DNS
-# polling logic is implemented.
-every 10.minutes do
-  runner "Rails.logger.debug('dns2rss cron heartbeat')"
+dns_check_interval = [ENV.fetch("DNS_CHECK_INTERVAL_MINUTES", "5").to_i, 1].max
+
+every dns_check_interval.minutes do
+  rake "dns:enqueue_due"
 end
