@@ -67,3 +67,6 @@ build-iPhoneSimulator/
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+# SQLite databases
+/db/*.sqlite3
+/db/*.sqlite3-journal

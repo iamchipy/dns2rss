@@ -25,3 +25,18 @@ production:
   host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
   port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
   sslmode: <%= ENV.fetch("POSTGRES_SSLMODE", "prefer") %>
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: db/development.sqlite3
+
+test:
+  <<: *default
+  database: ":memory:"
+
+production:
+  <<: *default
+  database: db/production.sqlite3
