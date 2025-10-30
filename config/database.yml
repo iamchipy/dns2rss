@@ -1,4 +1,30 @@
 default: &default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+sqlite: &sqlite
+  <<: *default
+  adapter: sqlite3
+  timeout: 5000
+
+development:
+  <<: *sqlite
+  database: storage/development.sqlite3
+
+test:
+  <<: *sqlite
+  database: storage/test.sqlite3
+
+production:
+  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  url: <%= ENV["DATABASE_URL"] %>
+  database: <%= ENV.fetch("POSTGRES_DB", "dns2rss_production") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "dns2rss") %>
+  password: <%= ENV["POSTGRES_PASSWORD"] || Rails.application.credentials.dig(:postgres, :password) %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
+  port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
+  sslmode: <%= ENV.fetch("POSTGRES_SSLMODE", "prefer") %>
   adapter: sqlite3
   pool: 5
   timeout: 5000

@@ -11,7 +11,17 @@
 /tmp/
 
 # Used by dotenv library to load environment variables.
-# .env
+.env
+
+# Rails specific ignores
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+/public/assets
+/node_modules/
 
 # Ignore Byebug command history file.
 .byebug_history
@@ -55,6 +65,8 @@ build-iPhoneSimulator/
 # Used by RuboCop. Remote config files pulled in from inherit_from directive.
 # .rubocop-https?--*
 
+# Ignore master key for decrypting credentials and more.
+/config/master.key
 # SQLite databases
 /db/*.sqlite3
 /db/*.sqlite3-journal
