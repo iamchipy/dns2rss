@@ -1,0 +1,2 @@
+<%= turbo_stream.replace @dns_watch, partial: "dns_watches/dns_watch", locals: { dns_watch: @dns_watch } %>
+<%= turbo_stream.replace "dns_watch_details", partial: "dns_watches/details", locals: { dns_watch: @dns_watch } %>

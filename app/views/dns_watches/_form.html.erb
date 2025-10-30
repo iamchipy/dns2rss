@@ -1,0 +1,59 @@
+<% submit_label = local_assigns.fetch(:submit_label, dns_watch.new_record? ? "Create watch" : "Save changes") %>
+<% cancel_action = local_assigns[:cancel_action] %>
+<% cancel_label = local_assigns.fetch(:cancel_label, "Cancel") %>
+
+<% if current_user.present? %>
+  <%= form_with model: dns_watch, class: "dns-form" do |form| %>
+    <% if dns_watch.errors.any? %>
+      <div class="dns-form__errors">
+        <p><%= pluralize(dns_watch.errors.count, "error") %> prevented saving this DNS watch:</p>
+        <ul>
+          <% dns_watch.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="dns-form__grid">
+      <div class="dns-form__field">
+        <%= form.label :domain, "Domain" %>
+        <%= form.text_field :domain, required: true, autocomplete: "off", placeholder: "example.com" %>
+      </div>
+
+      <div class="dns-form__field">
+        <%= form.label :record_name, "Record name" %>
+        <%= form.text_field :record_name, required: true, autocomplete: "off", placeholder: "@" %>
+      </div>
+
+      <div class="dns-form__field">
+        <%= form.label :record_type, "Record type" %>
+        <%= form.select :record_type, options_for_select(DnsWatch::RECORD_TYPES, dns_watch.record_type || DnsWatch::RECORD_TYPES.first) %>
+      </div>
+
+      <div class="dns-form__field">
+        <%= form.label :check_interval_minutes, "Check interval (minutes)" %>
+        <% interval_value = dns_watch.check_interval_minutes.positive? ? dns_watch.check_interval_minutes.to_i : 5 %>
+        <%= form.number_field :check_interval_minutes, value: interval_value, min: 1, step: 1 %>
+      </div>
+
+      <div class="dns-form__field">
+        <%= form.label :visibility, "Visibility" %>
+        <% visibility_options = DnsWatch.visibilities.keys.map { |value| [value.humanize, value] } %>
+        <% selected_visibility = dns_watch.visibility.presence || DnsWatch.visibilities[:public] %>
+        <%= form.select :visibility, options_for_select(visibility_options, selected_visibility) %>
+      </div>
+    </div>
+
+    <div class="dns-form__actions">
+      <%= form.submit submit_label, class: "dns-form__submit" %>
+      <% if cancel_action.present? %>
+        <button type="button" class="dns-form__cancel" data-action="<%= cancel_action %>"><%= cancel_label %></button>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="dns-form__guest">
+    <p>You must sign in to create DNS watches.</p>
+  </div>
+<% end %>

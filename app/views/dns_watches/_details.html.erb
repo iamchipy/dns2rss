@@ -1,0 +1,43 @@
+<article class="dns-watch-details">
+  <% if dns_watch.present? %>
+    <header class="dns-watch-details__header">
+      <h3><%= dns_watch.domain %></h3>
+      <span class="dns-watch-details__badge dns-watch-details__badge--<%= dns_watch.visibility %>">
+        <%= dns_watch.visibility.capitalize %>
+      </span>
+    </header>
+
+    <dl class="dns-watch-details__meta">
+      <div>
+        <dt>Record</dt>
+        <dd><%= dns_watch.record_type %> / <%= dns_watch.record_name %></dd>
+      </div>
+      <div>
+        <dt>Owner</dt>
+        <dd><%= dns_watch.user.email %></dd>
+      </div>
+      <div>
+        <dt>Last checked</dt>
+        <dd>
+          <% if dns_watch.last_checked_at.present? %>
+            <%= l(dns_watch.last_checked_at, format: :long) %>
+          <% else %>
+            Not yet checked
+          <% end %>
+        </dd>
+      </div>
+      <div>
+        <dt>Next check</dt>
+        <dd><%= l(dns_watch.next_check_at, format: :long) %></dd>
+      </div>
+      <div>
+        <dt>Latest value</dt>
+        <dd><%= simple_format(dns_watch.last_value || "No data yet") %></dd>
+      </div>
+    </dl>
+  <% else %>
+    <div class="dns-watch-details__empty">
+      <p>Select a DNS watch to see its most recent activity.</p>
+    </div>
+  <% end %>
+</article>

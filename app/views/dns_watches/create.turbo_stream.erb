@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "dns_watch_form", partial: "dns_watches/form", locals: { dns_watch: @dns_watch_form } %>
+<%= turbo_stream.replace "dns_watches", partial: "dns_watches/list", locals: { dns_watches: @dns_watches } %>
+<%= turbo_stream.replace "dns_watch_details", partial: "dns_watches/details", locals: { dns_watch: @dns_watch } %>

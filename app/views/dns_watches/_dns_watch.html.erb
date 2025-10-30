@@ -1,0 +1,49 @@
+<%= turbo_frame_tag dom_id(dns_watch) do %>
+  <% editing = dns_watch.errors.any? %>
+  <article class="dns-watch-card" data-controller="dns-watch">
+    <div class="dns-watch-card__body <%= "hidden" if editing %>" data-dns-watch-target="display">
+      <header class="dns-watch-card__header">
+        <h3 class="dns-watch-card__title">
+          <%= dns_watch.domain %>
+          <span class="dns-watch-card__record">
+            <%= dns_watch.record_type %> / <%= dns_watch.record_name %>
+          </span>
+        </h3>
+        <span class="dns-watch-card__visibility dns-watch-card__visibility--<%= dns_watch.visibility %>">
+          <%= dns_watch.visibility.capitalize %>
+        </span>
+      </header>
+
+      <dl class="dns-watch-card__meta">
+        <div>
+          <dt>Owner</dt>
+          <dd><%= dns_watch.user.email %></dd>
+        </div>
+        <div>
+          <dt>Interval</dt>
+          <dd><%= number_with_precision(dns_watch.check_interval_minutes, precision: 0) %> min</dd>
+        </div>
+        <div>
+          <dt>Last value</dt>
+          <dd><%= dns_watch.last_value.presence || "Not yet checked" %></dd>
+        </div>
+      </dl>
+
+      <div class="dns-watch-card__actions">
+        <%= link_to "View details", dns_watch_path(dns_watch), class: "dns-watch-card__action", data: { turbo_frame: "dns_watch_details" } %>
+
+        <% if dns_watch.owner?(current_user) %>
+          <button type="button" class="dns-watch-card__action" data-action="dns-watch#toggleEdit">Edit</button>
+
+          <%= button_to "Remove", dns_watch_path(dns_watch), method: :delete, class: "dns-watch-card__action dns-watch-card__action--delete", form: { data: { turbo_confirm: "Remove this DNS watch?" } } %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if dns_watch.owner?(current_user) %>
+      <div class="dns-watch-card__form <%= "hidden" unless editing %>" data-dns-watch-target="form">
+        <%= render "form", dns_watch: dns_watch, submit_label: "Save changes", cancel_action: "dns-watch#cancel" %>
+      </div>
+    <% end %>
+  </article>
+<% end %>
