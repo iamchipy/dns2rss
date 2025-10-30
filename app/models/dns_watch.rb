@@ -20,6 +20,17 @@ class DnsWatch < ApplicationRecord
 
   scope :due_for_check, -> { where("next_check_at <= ?", Time.now) }
 
+  def check_interval_minutes
+    interval_seconds.to_f / 60.0
+  end
+
+  def check_interval_minutes=(minutes)
+    return if minutes.nil?
+
+    numeric_minutes = minutes.to_f
+    self.interval_seconds = (numeric_minutes * 60).to_i if numeric_minutes.positive?
+  end
+
   private
 
   def normalize_domain
