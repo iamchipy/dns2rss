@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class DnsWatchesController < ApplicationController
-  before_action :require_authenticated_user, only: %i[create update destroy]
+  include Ownership
+
+  before_action :require_authentication, only: %i[create update destroy]
   before_action :set_dns_watch, only: %i[show update destroy]
   before_action :authorize_view!, only: :show
   before_action :authorize_owner!, only: %i[update destroy]

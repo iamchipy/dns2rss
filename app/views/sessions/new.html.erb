@@ -1,0 +1,12 @@
+<div class="auth-form">
+  <h2>Sign In</h2>
+  <p>Welcome back! Please sign in to your account.</p>
+
+  <div id="session_form">
+    <%= render "form", user: @user %>
+  </div>
+
+  <div class="auth-form__links">
+    <p>Don't have an account? <%= link_to "Sign up", signup_path, data: { turbo_frame: "_top" } %></p>
+  </div>
+</div>

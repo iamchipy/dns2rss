@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+one:
+  email: one@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  feed_token: <%= SecureRandom.hex(16) %>
+
+two:
+  email: two@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  feed_token: <%= SecureRandom.hex(16) %>

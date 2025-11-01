@@ -1,0 +1,12 @@
+<div class="auth-form">
+  <h2>Sign Up</h2>
+  <p>Create your account to start monitoring DNS changes.</p>
+
+  <div id="user_form">
+    <%= render "form", user: @user %>
+  </div>
+
+  <div class="auth-form__links">
+    <p>Already have an account? <%= link_to "Sign in", login_path, data: { turbo_frame: "_top" } %></p>
+  </div>
+</div>
