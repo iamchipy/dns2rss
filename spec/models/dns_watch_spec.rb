@@ -56,6 +56,13 @@ RSpec.describe DnsWatch do
     expect(watch.interval_seconds).to eq(300)
   end
 
+  it "defaults visibility to public" do
+    watch.visibility = nil
+    watch.valid?
+
+    expect(watch.visibility).to eq("public")
+  end
+
   it "normalizes domain and record type" do
     watch.domain = "Example.COM "
     watch.record_type = "mx"
@@ -104,6 +111,72 @@ RSpec.describe DnsWatch do
 
       expect(due_ids).to include(watch.id)
       expect(due_ids).not_to include(future_watch.id)
+    end
+  end
+
+  describe ".visible_to" do
+    let(:other_user) { User.create!(email: "viewer@example.com", password: "password123", password_confirmation: "password123") }
+
+    let!(:public_watch) do
+      described_class.create!(
+        user: other_user,
+        domain: "public.example.com",
+        record_type: "A",
+        record_name: "@",
+        interval_seconds: 300,
+        next_check_at: Time.now,
+        visibility: "public"
+      )
+    end
+
+    let!(:owned_private_watch) do
+      described_class.create!(
+        user: user,
+        domain: "owned-private.example.com",
+        record_type: "A",
+        record_name: "@",
+        interval_seconds: 300,
+        next_check_at: Time.now,
+        visibility: "private"
+      )
+    end
+
+    let!(:foreign_private_watch) do
+      described_class.create!(
+        user: other_user,
+        domain: "foreign-private.example.com",
+        record_type: "A",
+        record_name: "@",
+        interval_seconds: 300,
+        next_check_at: Time.now,
+        visibility: "private"
+      )
+    end
+
+    it "returns only public watches for guests" do
+      results = described_class.visible_to(nil)
+
+      expect(results).to include(public_watch)
+      expect(results).not_to include(owned_private_watch)
+      expect(results).not_to include(foreign_private_watch)
+    end
+
+    it "includes public and owned watches for the user" do
+      results = described_class.visible_to(user)
+
+      expect(results).to include(public_watch)
+      expect(results).to include(owned_private_watch)
+      expect(results).not_to include(foreign_private_watch)
+    end
+  end
+
+  describe "#owner?" do
+    it "returns true only for the owning user" do
+      watch.save!
+
+      expect(watch.owner?(user)).to eq(true)
+      expect(watch.owner?(User.create!(email: "other@example.com", password: "password123", password_confirmation: "password123"))).to eq(false)
+      expect(watch.owner?(nil)).to eq(false)
     end
   end
 end

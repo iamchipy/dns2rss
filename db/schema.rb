@@ -2,7 +2,7 @@
 
 require "active_record"
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_26_000200) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_26_000300) do
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -22,10 +22,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_26_000200) do
     t.datetime "last_checked_at"
     t.datetime "next_check_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.text "last_value"
+    t.string "visibility", default: "public", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_dns_watches_on_user_id"
     t.index ["next_check_at"], name: "index_dns_watches_on_next_check_at"
+    t.index ["visibility"], name: "index_dns_watches_on_visibility"
     t.index ["user_id", "domain", "record_type", "record_name"], name: "index_dns_watches_uniqueness", unique: true
   end
 

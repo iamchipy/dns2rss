@@ -1,0 +1,7 @@
+<div id="dns_watches" class="dns-watch-list">
+  <% if dns_watches.any? %>
+    <%= render dns_watches %>
+  <% else %>
+    <p class="dns-watch-list__empty">No DNS watches yet. Create one to get started.</p>
+  <% end %>
+</div>

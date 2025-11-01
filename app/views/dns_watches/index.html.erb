@@ -1,0 +1,26 @@
+<div class="dns-dashboard">
+  <header class="dns-dashboard__header">
+    <h1 class="dns-dashboard__title">DNS watches</h1>
+    <p class="dns-dashboard__subtitle">
+      Track DNS records, control who can see them, and watch changes roll in without ever leaving this page.
+    </p>
+  </header>
+
+  <div class="dns-dashboard__body">
+    <section class="dns-dashboard__column dns-dashboard__column--form">
+      <h2 class="dns-section__title">Create a watch</h2>
+      <turbo-frame id="dns_watch_form">
+        <%= render "form", dns_watch: @dns_watch_form %>
+      </turbo-frame>
+    </section>
+
+    <section class="dns-dashboard__column dns-dashboard__column--list">
+      <h2 class="dns-section__title">Monitored records</h2>
+      <%= render "list", dns_watches: @dns_watches %>
+
+      <turbo-frame id="dns_watch_details">
+        <%= render "details", dns_watch: nil %>
+      </turbo-frame>
+    </section>
+  </div>
+</div>
