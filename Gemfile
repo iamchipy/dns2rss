@@ -57,6 +57,8 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
   gem "rubocop", require: false
+  gem "rubocop-rails", require: false
+  gem "rspec-rails", "~> 6.0"
 end
 
 group :development do
@@ -80,7 +82,3 @@ end
 group :production do
   gem "pg", "~> 1.5"
 end
-gem "activerecord", "~> 7.1"
-gem "sqlite3", "~> 1.6"
-gem "bcrypt", "~> 3.1"
-gem "rspec", "~> 3.12"
