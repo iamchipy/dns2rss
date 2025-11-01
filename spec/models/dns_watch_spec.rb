@@ -170,6 +170,38 @@ RSpec.describe DnsWatch do
     end
   end
 
+  describe "#check_interval_minutes" do
+    it "returns the interval in minutes as a float" do
+      watch.interval_seconds = 450
+
+      expect(watch.check_interval_minutes).to eq(7.5)
+    end
+  end
+
+  describe "#check_interval_minutes=" do
+    it "converts minutes to interval seconds" do
+      watch.check_interval_minutes = 12
+
+      expect(watch.interval_seconds).to eq(720)
+    end
+
+    it "ignores nil values" do
+      expect {
+        watch.check_interval_minutes = nil
+      }.not_to change(watch, :interval_seconds)
+    end
+
+    it "does not update when minutes is zero or negative" do
+      expect {
+        watch.check_interval_minutes = 0
+      }.not_to change(watch, :interval_seconds)
+
+      expect {
+        watch.check_interval_minutes = -5
+      }.not_to change(watch, :interval_seconds)
+    end
+  end
+
   describe "#owner?" do
     it "returns true only for the owning user" do
       watch.save!
