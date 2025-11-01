@@ -14,6 +14,11 @@ Rails.application.routes.draw do
 
   resources :dns_watches, only: %i[index show create update destroy]
 
+  # RSS Feeds
+  get "feeds/public", to: "feeds#public", as: :public_feed, defaults: { format: :rss }
+  get "feeds/user", to: "feeds#user", as: :user_feed, defaults: { format: :rss }
+  get "feeds/watch/:id", to: "feeds#watch", as: :watch_feed, defaults: { format: :rss }
+
   # Defines the root path route ("/")
   root "dns_watches#index"
 end
