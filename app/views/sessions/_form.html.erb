@@ -1,0 +1,21 @@
+<%= form_with(model: user, url: session_path, method: :post, data: { turbo: true }, class: "form") do |form| %>
+  <% if flash[:alert] %>
+    <div class="form__errors">
+      <p><%= flash[:alert] %></p>
+    </div>
+  <% end %>
+
+  <div class="form__field">
+    <%= form.label :email, class: "form__label" %>
+    <%= form.email_field :email, required: true, class: "form__input", autocomplete: "email" %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :password, class: "form__label" %>
+    <%= form.password_field :password, required: true, class: "form__input", autocomplete: "current-password" %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit "Sign In", class: "button button--primary" %>
+  </div>
+<% end %>

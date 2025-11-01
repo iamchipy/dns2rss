@@ -11,5 +11,15 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+
+    # Log in as a specific user
+    def log_in_as(user)
+      post session_path, params: { user: { email: user.email, password: "password" } }
+    end
+
+    # Log out the current user
+    def log_out
+      delete logout_path
+    end
   end
 end

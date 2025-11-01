@@ -13,10 +13,24 @@
   <body class="layout">
     <div class="layout__container">
       <header class="layout__header">
-        <div class="layout__brand">
-          <%= link_to "dns2rss", root_path, class: "layout__brand-link" %>
+        <div class="layout__header-content">
+          <div class="layout__brand">
+            <%= link_to "dns2rss", root_path, class: "layout__brand-link" %>
+          </div>
+          <p class="layout__tagline">Single-page interface for DNS change monitoring</p>
         </div>
-        <p class="layout__tagline">Single-page interface for DNS change monitoring</p>
+        
+        <nav class="layout__nav">
+          <% if logged_in? %>
+            <span class="layout__nav-item">Signed in as <%= current_user.email %></span>
+            <%= link_to "Sign Out", logout_path, method: :delete, 
+                data: { turbo: true, turbo_method: :delete }, 
+                class: "layout__nav-link" %>
+          <% else %>
+            <%= link_to "Sign Up", signup_path, class: "layout__nav-link" %>
+            <%= link_to "Sign In", login_path, class: "layout__nav-link" %>
+          <% end %>
+        </nav>
       </header>
 
       <main class="layout__main">

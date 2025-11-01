@@ -1,0 +1,31 @@
+<%= form_with(model: user, url: users_path, data: { turbo: true }, class: "form") do |form| %>
+  <% if user.errors.any? %>
+    <div class="form__errors">
+      <h3><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h3>
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form__field">
+    <%= form.label :email, class: "form__label" %>
+    <%= form.email_field :email, required: true, class: "form__input", autocomplete: "email" %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :password, class: "form__label" %>
+    <%= form.password_field :password, required: true, class: "form__input", autocomplete: "new-password" %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :password_confirmation, "Confirm Password", class: "form__label" %>
+    <%= form.password_field :password_confirmation, required: true, class: "form__input", autocomplete: "new-password" %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit "Sign Up", class: "button button--primary" %>
+  </div>
+<% end %>
